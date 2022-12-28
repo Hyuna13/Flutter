@@ -1,0 +1,96 @@
+레이아웃(layout): 원하는 위치에 원하는 요소를 배치하는 작업
+
+기본 Widgets
+
+Text:
+
+Text(
+  'Text Widget',
+  style: TextStyle(
+    fontSize: 35, // 폰트 사이즈
+    fontWeight: FontWeight.bold, // 폰트 두께
+    color: Colors.amber, // 폰트 색상
+  ),
+)
+
+Container: Box 형태의 기본적인 위젯으로 다방면으로 많이 사용
+Container(
+  width: 200, // 폭
+  height: 200, // 높이
+  color: Colors.pinkAccent, // 박스 색상
+  child: Text("I Love Flutter!"), // 자식 위젯
+),
+
+margin : 박스 바깥 영역
+padding : 박스 안쪽 영역
+alignment : child 정렬
+
+EdgeInsets: 
+
+전방위 모두 동일하게 적용
+EdgeInsets.all(8)
+    
+특정 방위만 적용
+EdgeInsets.only(
+      left: 8,
+      right: 8,
+)
+    
+위아래 또는 좌우 적용
+EdgeInsets.symmetric(
+	vertical: 8,
+	horizontal: 8,
+)
+body: Container(
+          width: 200,
+          height: 200,
+          color: Colors.pinkAccent, // 박스 색상
+          padding: EdgeInsets.all(20), // 박스 안쪽 영역
+          margin: EdgeInsets.all(100), // 박스 바깥 영역
+          alignment: Alignment.bottomLeft, // child 정렬
+          child: Text(
+            "BOX",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+
+boxDecoration: Container의 테두리(border), 그림자, 색상 등을 꾸밀 때 사용
+color와 decoration을 동시에 사용하면 ERROR! color를 decoration 안에 넣으면 됨
+decoration: BoxDecoration(
+              child: Text("Flutter"),
+              color: Colors.amber, // decoration 안에 color를 활용해주세요.
+              borderRadius: BorderRadius.circular(50), // 모서리를 둥글게
+              border: Border.all(color: Colors.blue, width: 5), // 테두리	
+							boxShadow: [
+                BoxShadow( // 그림자 효과
+                  color: Colors.grey.withOpacity(0.7), // 투명도 70% 회색
+                  spreadRadius: 5, // 퍼짐 효과
+                  blurRadius: 7, // 뭉갬 효과
+                  offset: Offset(5, 5), // 그림자를 우측 5 아래 5만큼 이동
+                ),
+              ],
+            ),
+            
+
+Icon: Material & Cupertino
+import 'package:flutter/material.dart';
+Icon(
+  Icons.home,
+  color: Colors.blue,
+  size: 50,
+),
+
+import 'package:flutter/cupertino.dart';
+Icon(
+  CupertinoIcons.house,
+  color: Colors.pink,
+  size: 50,
+),
+
+Image: 
+url로 된 이미지 보여주기
+Image.network("URL")
