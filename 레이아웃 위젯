@@ -1,0 +1,217 @@
+Scaffold: 한 페이지의 레이어를 쉽게 구성할 수 있도록 틀을 잡아줌
+Scaffold(
+	appBar: AppBar(), // 상단 바
+	body: Text(), //화면 중앙에 가장 큰 면적
+	bottomNavigationBar: BottomNavigationBar(), //하단 바
+	floatingActionButton: FloatingActionButton(), //우측 하단
+),
+
+    AppBar: 앱의 상단 영역
+    home: Scaffold(
+            backgroundColor: Colors.purple,
+            appBar: AppBar(title: Text("AppBar"), centerTitle: false)
+          ),
+
+    body: 화면에 가장 넓은 면적
+    home: Scaffold(
+            backgroundColor: Colors.purple,
+            appBar: AppBar(title: Text("AppBar"), centerTitle: false),
+            body: Container(
+              width: double.infinity, 
+              height: 200, 
+              color: Colors.green,
+            ),
+          ),
+    * double.infinity 화면 꽉 채우기
+
+    bottomNavigationBar: 가장 하단에 위치
+    bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.alarm),
+                  label: 'Alarm',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.nightlight_round),
+                  label: 'Sleep',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: 'Setting',
+                ),
+              ],
+              currentIndex: 0, // 현재 선택된 메뉴
+              selectedItemColor: Colors.amber,
+            ),
+
+    * items : 각각의 메뉴 버튼들이 모여있는 배열(List)
+    * currentIndex : 현재 선택된 items의 index
+
+    floatingActionButton: 사용자가 가장 누르기 쉬운 위치인 우측 하단에 위치
+    floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                print("클릭 되었습니다!");
+              },
+              child: const Icon(
+                Icons.add,
+                color: Colors.amber,
+              ),
+              backgroundColor: Colors.white,
+            ),
+
+    * onPressed: 익명함수(이름이 없는 함수)를 전달 받고, 내부적으로 클릭이 되었을 때 해당 익명함수를 호출해주는 방식으로 동작
+------------------------------------
+
+Column: 세로 방향에 대한 레이아웃을 잡을 때 사용
+Column(
+  children: [ // 자식 위젯들
+    Text("위젯1"),
+    Text("위젯2"),
+  ],
+),
+
+    mainAxisSize : 세로 방향에 대한 크기
+    mainAxisAlignment : 세로 방향에 대한 정렬
+    crossAxisAlignment : 가로 방향에 대한 정렬
+
+    home: Scaffold(
+            body: Container(
+              color: Colors.green,
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // 세로 길이 : max(default)
+                mainAxisAlignment: MainAxisAlignment.center, // 세로 방향 정렬 : start(default)
+                crossAxisAlignment: CrossAxisAlignment.stretch, // 가로 방향 정렬 : center(default)
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.amber,
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.blue,
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.pink,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+Row: 가로 방향 레이아웃 잡을 때 사용
+mainAxisAlignment : 가로 방향에 대한 정렬
+crossAxisAlignment : 세로 방향에 대한 정렬
+
+------------------------------------
+Stack: 화면에 위젯을 쌓고 싶을 때 사용하는 위젯
+Stack(
+  children: [ // 자식 위젯들
+    Text("위젯1"),
+    Text("위젯2"),
+  ],
+),
+
+    children에서 아래에 있는 위젯이 더 위에 표시
+    alignment를 이용해서 자식 위젯들을 이동
+    Positioned 위젯을 이용하면 Stack 내부에서 원하는 위치에 배치
+
+    home: Scaffold(
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.green,
+              child: Stack(
+                alignment: Alignment.topLeft,
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    margin: EdgeInsets.all(0),
+                    color: Colors.amber,
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    margin: EdgeInsets.all(16),
+                    color: Colors.blue,
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    margin: EdgeInsets.all(32),
+                    color: Colors.pink,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+    home: Scaffold(
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.green,
+              child: Stack(
+                alignment: Alignment.center, // 기본 중앙 정렬
+                children: [
+                  // 우측 상단
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      color: Colors.amber,
+                    ),
+                  ),
+
+                  // 우측 하단
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      color: Colors.blue,
+                    ),
+                  ),
+
+                  // 좌측 하단
+                  Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      color: Colors.pink,
+                    ),
+                  ),
+
+                  // 중앙
+                  Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.indigo,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+------------------------------------
+
+SingleChildScrollView: Child 위젯이 화면의 스크린보다 큰 경우, 스크롤 할 수 있도록 만들어줌
+SingleChildScrollView(
+  child: Container(height: 10000), // 자식 위젯
+),
+
+Column을 SingleChildScrollView로 감싸줌
+
+
+
+------------------------------------
+가능한 코드 마지막 부분에 쉼표를 넣어주는게 좋음
