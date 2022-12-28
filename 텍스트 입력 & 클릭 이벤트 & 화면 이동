@@ -1,0 +1,137 @@
+TextField: Text를 입력 받을 때 사용
+TextField(
+  autofocus: true, // 자동 포커스
+  onChanged: (text) {
+    // 텍스트 변경시 실행되는 함수
+  },
+  onSubmitted: (text) {
+    // Enter를 누를 때 실행되는 함수
+  },
+),
+
+    autofocus: 해당 위젯이 화면에 보일 때 바로 포커스 되는지의 여부
+    onChanged: 텍스트 변경 시 현재 입력된 값이 파라미터로 넘어오는 함수
+    onSubmitted: Enter를 누르는 경우 현재 입력된 값이 파라미터로 넘어오는 함수
+
+     home: Scaffold(
+            body: Center(
+              child: TextField(
+                autofocus: false, // 자동 포커스
+                onChanged: (text) {
+                  // 텍스트 변경시 실행되는 함수
+                  print(text);
+                },
+                onSubmitted: (text) {
+                  // Enter를 누를 때 실행되는 함수
+                  print("on submitted : $text");
+                },
+              ),
+            ),
+          ),
+          
+---------------------------------------
+다양한 버튼 
+ElevatedButton: 위로 올라와 있는 듯한 버튼
+TextButton: 텍스트 버튼
+IconButton: 아이콘 버튼
+
+// 위로 올라와 있는 듯한 버튼
+ElevatedButton(
+  onPressed: () {
+    print("Elevated Button 클릭");
+  },
+  child: Text('Elevated Button'),
+),
+
+// 텍스트 버튼
+TextButton(
+  onPressed: () {
+    print("Text Button 클릭");
+  },
+  child: Text('Text Button'),
+),
+
+// 아이콘 버튼
+IconButton(
+  onPressed: () {
+    print("Icon Button 클릭");
+  },
+  icon: Icon(Icons.add),
+),
+
+---------------------------------------
+화면 이동
+각 화면을 라우트(Route)라고 부르며, 화면을 이동할 때 네비게이터(Navigator)를 사용
+
+    다음페이지 이동
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SecondPage()), // 이동하려는 페이지
+    );
+
+    현재 화면 종료
+    Navigator.pop(context); // 종료
+
+    class MyApp extends StatelessWidget {
+      const MyApp({Key? key}) : super(key: key);
+
+      @override
+      Widget build(BuildContext context) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: FirstPage(),
+        );
+      }
+    }
+
+    // 첫 번째 페이지
+    class FirstPage extends StatelessWidget {
+      const FirstPage({Key? key}) : super(key: key);
+
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("홈"),
+          ),
+          body: Center(
+            child: ElevatedButton(
+              child: Text("다음 페이지로 이동"),
+              onPressed: () {
+                // 페이지 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecondPage()),
+                );
+              },
+            ),
+          ),
+        );
+      }
+    }
+
+    // 두 번째 페이지
+    class SecondPage extends StatelessWidget {
+      const SecondPage({Key? key}) : super(key: key);
+
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("두 번째 페이지 입니다!"),
+          ),
+          backgroundColor: Colors.amber,
+          body: Center(
+            child: ElevatedButton(
+              child: Text("첫 번째 페이지로 되돌아가기"),
+              onPressed: () {
+                // 뒤로가기
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        );
+      }
+    }
+
+    *화면이 많아지는 경우, Named Route 방식을 사용
