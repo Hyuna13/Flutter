@@ -1,0 +1,294 @@
+반복되는 코드는 Widgets파일을 만들어서 class로 분리
+픽셀이 넘칠때 SingleChildScrollView를 사용하여 스크롤 가능하게 함
+CrossAxisAlignment와 MainAxisAlignment은 Row, Column안에서 기능을 다르게 함
+빈공간을 만들때 SizedBox를 사용
+child는 위젯을 하나 포함할때 children은 위젯을 여러개 포함할때
+Transform.translate Offset을 사용하요 좌표로 위치 바꿈
+Transform.scale 나머지 아이템을 제외하고 단독으로 사이즈 바꾸기
+clipBehavior: Clip.hardEdge는 overflow가 일어날때 위젯을 기준으로 잘라주는 역할을 함
+
+style, text, padding, Row, Column등은 점점 익숙해 지는중..
+
+
+-----
+
+main.dart
+import 'package:flutter/material.dart';
+import 'package:toonflix/Widgets/currency_card.dart';
+import 'package:toonflix/widgets/button.dart';
+
+void main() {
+  runApp(App());
+}
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: Scaffold(
+      backgroundColor: Color(0xFF181818),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 17,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 80,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text("Hey, Selena",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
+                          )),
+                      Text("Welcome back",
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 18,
+                          )),
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 80,
+              ),
+              Text(
+                'Total Balance',
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                '\$5 194 482',
+                style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Button(
+                    text: 'Transfer',
+                    bgColor: Color(0xFFF1B33B),
+                    textColor: Colors.black,
+                  ),
+                  Button(
+                    text: 'Request',
+                    bgColor: Color(0xFF1F2123),
+                    textColor: Colors.white,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 70,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Wallets',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    'View All',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CurrencyCard(
+                name: 'Euro',
+                code: 'EUR',
+                amount: '6 428',
+                icon: Icons.euro_rounded,
+                isInverted: false,
+                offset: 0,
+              ),
+              CurrencyCard(
+                name: 'Bitcoin',
+                code: 'BTC',
+                amount: '9 234',
+                icon: Icons.currency_bitcoin_rounded,
+                isInverted: true,
+                offset: -20,
+              ),
+              CurrencyCard(
+                name: 'Dollar',
+                code: 'USD',
+                amount: '534',
+                icon: Icons.attach_money_outlined,
+                isInverted: false,
+                offset: -40,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ));
+  }
+}
+
+
+----------------------
+Reusable한 코드 만들기
+
+currency_card.dart
+import 'package:flutter/material.dart';
+
+class CurrencyCard extends StatelessWidget {
+  final String name, code, amount;
+  final IconData icon;
+  final bool isInverted;
+  final double offset;
+  final _blackColor = const Color(0xFF1F2123);
+
+  const CurrencyCard({
+    super.key,
+    required this.name,
+    required this.code,
+    required this.amount,
+    required this.icon,
+    required this.isInverted,
+    required this.offset,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(0, offset),
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          color: isInverted ? Colors.white : _blackColor,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      color: isInverted ? _blackColor : Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        amount,
+                        style: TextStyle(
+                          color: isInverted ? _blackColor : Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        code,
+                        style: TextStyle(
+                          color: isInverted
+                              ? _blackColor
+                              : Colors.white.withOpacity(0.8),
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Transform.scale(
+                scale: 2.2,
+                child: Transform.translate(
+                  offset: Offset(-5, 12),
+                  child: Icon(
+                    icon,
+                    color: isInverted ? _blackColor : Colors.white,
+                    size: 88,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+---
+button.dart
+import 'package:flutter/material.dart';
+
+class Button extends StatelessWidget {
+  final String text;
+  final Color bgColor;
+  final Color textColor;
+
+  const Button({
+    required this.text,
+    required this.bgColor,
+    required this.textColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(45),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 45,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 20,
+            color: textColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
