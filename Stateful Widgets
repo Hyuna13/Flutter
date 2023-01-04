@@ -1,0 +1,6 @@
+Stateful widget은 동적인 상태를 구현하고 싶을 때 사용되는 위젯
+setState는 state클래스에게 데이터가 변경되었다고 알림
+실행할때마다 build메소드 재실행
+build 메소드는 구현한 UI 위젯들을 화면에 출력될 수 있도록 리턴
+initState는 데이터 초기화를 할때
+dispose는 취소할때 
