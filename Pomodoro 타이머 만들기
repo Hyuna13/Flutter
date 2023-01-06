@@ -35,6 +35,7 @@ class App extends StatelessWidget {
 
 home_screen.dart
 import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 
@@ -84,6 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void onRestartPressed() {
+    timer.cancel();
+    setState(() {
+      totalSeconds = twentyFiveMinutes;
+      isRunning = false;
+    });
+  }
+
   String format(int seconds) {
     var duration = Duration(seconds: seconds);
 
@@ -111,15 +120,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Flexible(
-              flex: 3,
+              flex: 2,
               child: Center(
-                child: IconButton(
-                  onPressed: isRunning ? onPausePressed : onStartPressed,
-                  iconSize: 120,
-                  color: Theme.of(context).cardColor,
-                  icon: Icon(isRunning
-                      ? Icons.pause_circle_outlined
-                      : Icons.play_circle_outlined),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: isRunning ? onPausePressed : onStartPressed,
+                      iconSize: 120,
+                      color: Theme.of(context).cardColor,
+                      icon: Icon(isRunning
+                          ? Icons.pause_circle_outlined
+                          : Icons.play_circle_outlined),
+                    ),
+                    IconButton(
+                      onPressed: onRestartPressed,
+                      iconSize: 120,
+                      color: Theme.of(context).cardColor,
+                      icon: Icon(
+                        Icons.restart_alt,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -165,3 +187,4 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 }
+
