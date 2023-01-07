@@ -1,0 +1,42 @@
+stateful widget을 사용하지 않고 stateless 상태에서 FutureBuilder를 사용하여 데이터를 main.dart에 그려냄
+future가 알아서 기다리고 snapshot으로 데이터를 받았는지 확인가능 await async사용할 필요가 없음
+
+screens
+home_screen.dart
+import 'package:flutter/material.dart';
+import 'package:toonflix/models/webtoon.dart';
+import 'package:toonflix/services/api_service.dart';
+
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+
+  Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        foregroundColor: Colors.green,
+        title: Text(
+          "Today's 툰s",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      body: FutureBuilder(
+        future: webtoons,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const Text("There is Data!");
+          }
+          return const Text('isLoading...');
+        },
+      ),
+    );
+  }
+}
