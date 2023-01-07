@@ -1,0 +1,47 @@
+웹툰 api로 데이터 불러오기
+URL요청을 위해서 http패키지를 설치해야함 => pub.dart 사이트에서 다운로드 혹은 pubspec.yaml에 코드 삽입
+http 패키지에서 get함수를 사용 
+await / async를 사용하여 응답을 받으면 실행하도록 함
+데이터를 json으로 바꾸기 위해 jsonDecode 함수 실행
+Webtoonmodel class를 따로 만들고 for구문으로 하나씩 
+
+Services
+api_service.dart
+
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+import '../models/webtoon.dart';
+
+class ApiService {
+  final String baseUrl = 'https://webtoon-crawler.nomadcoders.workers.dev';
+  final String today = 'today';
+
+  Future<List<WebtoonModel>> getTodaysToons() async {
+    List<WebtoonModel> webtoonInstances = [];
+    final url = Uri.parse('$baseUrl/$today');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> webtoons = jsonDecode(response.body);
+      for (var webtoon in webtoons) {
+        webtoonInstances.add(WebtoonModel.fromJson(webtoon));
+      }
+      return webtoonInstances;
+    }
+    throw Error();
+  }
+}
+
+------
+Models
+webtoon.dart
+
+class WebtoonModel {
+  final String title, thumb, id;
+
+  WebtoonModel.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        thumb = json['thumb'],
+        id = json['id'];
+}
